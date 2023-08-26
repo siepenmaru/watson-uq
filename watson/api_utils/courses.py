@@ -49,7 +49,8 @@ def get_current_courses(url, debug=False) -> dict:
                     'duration': activity['duration'],
                     'building_id': loc_info['building_id'], 
                     'room_id': loc_info['room_id'],
-                    'building_name': loc_info['building_name']
+                    'building_name': loc_info['building_name'],
+                    'faculty': faculty
                     }
             except Exception:
                 # ¯\_(ツ)_/¯
