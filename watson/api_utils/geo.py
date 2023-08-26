@@ -35,7 +35,7 @@ def get_campus_buildings():
     
     relation: overpy.Relation
     for relation in out.relations:
-        if "ref" in relation:
+        if "ref" in relation.tags:
             coords = get_relation_center(relation)
 
             buildings[relation.tags["ref"]] = {"lat": coords[0], "lon": coords[1]}
@@ -47,7 +47,7 @@ def save_building_data():
     # hacky as heck, should probably use the DB for this.
     data = get_campus_buildings()
 
-    with open('buildings.pickle', 'wb') as handle:
+    with open('data/buildings.pickle', 'wb') as handle:
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 def get_center_coords(way: overpy.Way) -> tuple[Decimal, Decimal]:
@@ -60,6 +60,10 @@ def get_center_coords(way: overpy.Way) -> tuple[Decimal, Decimal]:
 
 def get_relation_center(relation: overpy.Relation) -> tuple[Decimal, Decimal]:
     centers = []
-    for way in relation.members:
-        centers.append(get_center_coords)
+    rway: overpy.RelationWay
+    for rway in relation.members:
+        centers.append(get_center_coords(rway.resolve(resolve_missing=True)))
     return np.mean(centers, axis=0)
+
+if __name__=='__main__':
+    save_building_data()
