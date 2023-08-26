@@ -5,9 +5,29 @@ import os
 import folium
 from api_utils import courses
 from .forms import TimeForm
+from datetime import datetime
 import pickle
 
 def index(request):
+    api_url = get_url()
+    if request.method == "POST":
+        print(request.POST)
+        form = TimeForm(request.POST)
+        if form.is_valid():
+            # try:
+            idx = form.cleaned_data['date_index']
+            time: datetime = form.cleaned_data['selected_time']
+            current_courses = courses.get_current_courses(api_url, idx, time, False, debug=False)
+            # except:
+            #     # FIXME: debug mode
+            #     current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
+        else:
+            # FIXME: debug mode
+            current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
+    else:
+        current_courses = courses.get_current_courses(api_url, 1, "10:00", True, debug=True)
+
+
     # create map centered on UQ
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
 
@@ -15,10 +35,9 @@ def index(request):
     # add building coords
     buildings = load_buildings()
 
-    api_url = get_url()
-    current_courses = courses.get_current_courses(api_url, debug=True)
     info: dict
     for course, info in current_courses.items():
+        # FIXME: What if there are multiple lectures going on in the same building????
         try:
             building = buildings[info["building_id"]]
             coords = (building['lat'], building['lon'])
@@ -62,7 +81,7 @@ def index(request):
     # create context for page
     context = {
         'map': m._repr_html_(),
-        'time_form': TimeForm()
+        'time_form': form
         }
 
     return render (request, "index.html", context)

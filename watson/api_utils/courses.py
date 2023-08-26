@@ -16,7 +16,7 @@ def get_course(
 
     return response
 
-def get_current_courses(url, debug=False) -> dict:
+def get_current_courses(url, day, time, current, debug=False) -> dict:
     # slow as all hell. fix???
     faculties = ["EAIT", "BEL", "HLBS", "HSS", "SCI", "MED"]
 
@@ -25,11 +25,15 @@ def get_current_courses(url, debug=False) -> dict:
         days = [1] # monday
         start_time = "10:00"
         end_time = "11:00"
-    else:
+    elif current:
         dt = datetime.now()
         days = [dt.date().strftime('%w')]
         start_time = floor_hour(dt).strftime("%H:%M")
-        end = ceil_hour(dt).strftime("%H:%M")
+        end_time = ceil_hour(dt).strftime("%H:%M")
+    else:
+        days = [day]
+        start_time = floor_hour(time).strftime("%H:%M")
+        end_time = ceil_hour(time).strftime("%H:%M")
 
     courses: dict = {}
     for faculty in faculties:

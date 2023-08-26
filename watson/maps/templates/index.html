@@ -59,13 +59,21 @@
     </div>
 
     <div class="navbar-end">
-      <div class="navbar-item">
-        <form method = "POST">
+    <form method="POST">
+      <div class="field is-grouped">
           {% csrf_token %}
-          {{ time_form|crispy }}
-        </form>
-          <button type="submit" class="button is-primary">Submit</button>
+          <div class="navbar-item">
+              {{ time_form.date_index|as_crispy_field }}
+          </div>
+          <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
+              {{ time_form.selected_time|as_crispy_field }}
+          </div>
+          <div class="navbar-item">
+              <button type="submit" class="button is-primary">Submit</button>
+          </div>
       </div>
+    </form>
+    <form method="GET">
       <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
         <div class="buttons">
           <a class="button is-primary">
@@ -73,6 +81,7 @@
           </a>
         </div>
       </div>
+    </form>
     </div>
   </div>
 </nav>
