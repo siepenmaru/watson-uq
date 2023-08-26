@@ -21,6 +21,7 @@ def get_current_courses(url, debug=False) -> dict:
     faculties = ["EAIT", "BEL", "HLBS", "HSS", "SCI", "MED"]
 
     if debug:
+        #FIXME: debug mode sets time and date to Monday 10AM
         days = [1] # monday
         start_time = "10:00"
         end_time = "11:00"
