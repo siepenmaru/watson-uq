@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 import overpy
-from misc import floor_hour, ceil_hour
+from .misc import floor_hour, ceil_hour
 
 def get_course(
         url, search_term, semester, faculty, activity_type, days, start_time, end_time
