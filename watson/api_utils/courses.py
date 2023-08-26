@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime, timedelta
+import overpy
 from misc import floor_hour, ceil_hour
 
 def get_course(
@@ -38,13 +39,17 @@ def get_current_courses(url, debug=False) -> dict:
 
                 if activity['campus'] == 'ONLINE':
                     continue
+                
+                loc_info = parse_location(activity['location'])
 
                 courses[v["callista_code"]] = {
                     "desc": v['description'],
                     'start_time': activity['start_time'],
                     'duration': activity['duration'],
-                    'location': activity['location']
-                }
+                    'building_id': loc_info['building_id'], 
+                    'room_id': loc_info['room_id'],
+                    'building_name': loc_info['building_name']
+                    }
             except Exception:
                 # ¯\_(ツ)_/¯
                 continue
