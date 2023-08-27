@@ -17,8 +17,11 @@
     <a class="navbar-item">
       <img src="{% static 'map.svg' %}" width="48" height="28">
     </a>
-    <a class="navbar-item title-is-4">
-        <strong>Watson UQ</strong>
+    <a class="navbar-item is-size-4 has-text-weight-bold">
+        Watson UQ
+    </a>
+    <a class="navbar-item is-size-5 has-text-weight-semibold">
+        Always know what's on!
     </a>
 
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -30,7 +33,7 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
+      {% comment %} <a class="navbar-item">
         Home
       </a>
 
@@ -53,7 +56,7 @@
           <hr class="navbar-divider">
           <a class="navbar-item">
             Report an issue
-          </a>
+          </a> {% endcomment %}
         </div>
       </div>
     </div>
@@ -69,13 +72,13 @@
               {{ time_form.selected_time|as_crispy_field }}
           </div>
           <div class="navbar-item">
-              <button type="submit" class="button is-primary">Submit</button>
+              <button type="submit" class="button is-success">Submit</button>
           </div>
       </div>
     </form>
     <form method="GET">
       <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
-          <button class="button is-primary" type="submit">
+          <button class="button is-info" type="submit">
             Reset to current time
         </div>
       </div>

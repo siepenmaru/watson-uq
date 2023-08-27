@@ -12,6 +12,7 @@ import pickle
 from branca.element import Template, MacroElement
 
 def index(request):
+    # TODO: handle multiple lecs in one building
     api_url = get_url()
     if request.method == "POST":
         print(request.POST)
@@ -49,10 +50,12 @@ def index(request):
     buildings = load_buildings()
 
     info: dict
+    visited: dict = {}
     for course, info in current_courses.items():
         # FIXME: What if there are multiple lectures going on in the same building????
         try:
             building = buildings[info["building_id"]]
+            # if building not in visited:
             coords = (building['lat'], building['lon'])
             
             icon = 'graduation-cap'
@@ -67,7 +70,7 @@ def index(request):
 
             label = folium.Html(
                 f"""
-                <h2>{course}</h2>
+                <h2>{course} | {info['building_id']}-{info['room_id']}</h2>
                 <p style="font-size:150%">{info['desc']}</p>
                 <ul style="font-size:120%">
                     <li>Faculty: {info['faculty']}</li>
@@ -77,12 +80,12 @@ def index(request):
                     <li>Duration: {info['duration']} minutes</li>
                 </ul>
                 <div class='text-center'>
-                <button style="height:36px; width:128px;">
+                <button style="height:36px; width:184px;">
                     <a 
                         href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route={user_loc[0]}%2C{user_loc[1]}%3B{coords[0]}%2C{coords[1]}" target="_blank" rel="noopener noreferrer"
                             style="font-size:1.875em;"
                         >
-                    Go!
+                    Navigate Here!
                     </a>
                 </button>
                 </div>
