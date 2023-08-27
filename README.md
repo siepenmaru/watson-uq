@@ -31,12 +31,12 @@ python manage.py runserver
 ## Usage
 Open `localhost:8000` in your browser of choice, you should be greeted with an overview of all the currently running lectures on campus based on your system's current time:
 
-![](images/overview.png | width=100)
+![](images/overview.png)
 
 Click on any of the clusters or markers, and you can see the details of the lecture:
 
-![](images/select.png | width=100)
+![](images/select.png)
 
 Click "Navigate Here" to find your way to your chosen lecture!
 
-![](images/navigate.png | width=100)
+![](images/navigate.png)
