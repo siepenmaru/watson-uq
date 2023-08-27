@@ -6,6 +6,8 @@ import folium
 from api_utils import courses
 from .forms import TimeForm
 from datetime import datetime
+from api_utils.misc import floor_hour
+from api_utils.geo import get_user_loc
 import pickle
 
 def index(request):
@@ -25,12 +27,21 @@ def index(request):
             # FIXME: debug mode
             current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
     else:
-        current_courses = courses.get_current_courses(api_url, 1, "10:00", True, debug=True)
+        dt = datetime.now()
+        form = TimeForm(
+            initial={
+                'date_index': dt.date().strftime('%w'),
+                'selected_time': floor_hour(dt.time())
+            }
+        )
+        current_courses = courses.get_current_courses(api_url, 1, "10:00", True, debug=False)
 
 
     # create map centered on UQ
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
-
+    
+    # get user location
+    user_loc = get_user_loc()
 
     # add building coords
     buildings = load_buildings()
@@ -63,6 +74,13 @@ def index(request):
                     <li>Start time: {info['start_time']}</li>
                     <li>Duration: {info['duration']} minutes</li>
                 </ul>
+                <div class='text-center'>
+                <button>
+                    <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route={user_loc[0]}%2C{user_loc[1]}%3B{coords[0]}%2C{coords[1]}" target="_blank" rel="noopener noreferrer">
+                    Go!
+                    </a>
+                </button>
+                </div>
                 """, script=True
             )
 
