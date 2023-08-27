@@ -9,6 +9,7 @@ from datetime import datetime
 from api_utils.misc import floor_hour
 from api_utils.geo import get_user_loc
 import pickle
+from branca.element import Template, MacroElement
 
 def index(request):
     api_url = get_url()
@@ -16,13 +17,9 @@ def index(request):
         print(request.POST)
         form = TimeForm(request.POST)
         if form.is_valid():
-            # try:
             idx = form.cleaned_data['date_index']
             time: datetime = form.cleaned_data['selected_time']
             current_courses = courses.get_current_courses(api_url, idx, time, False, debug=False)
-            # except:
-            #     # FIXME: debug mode
-            #     current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
         else:
             # FIXME: debug mode
             current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
@@ -39,6 +36,11 @@ def index(request):
 
     # create map centered on UQ
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
+    template = get_template()
+    macro = MacroElement()
+    macro._template = Template(template)
+
+    m.get_root().add_child(macro)
     
     # get user location
     user_loc = get_user_loc(cheat_mode=True)
@@ -117,3 +119,125 @@ def load_buildings() -> dict:
     with open(file_path, 'rb') as handle:
         data = pickle.load(handle)
     return data
+
+def get_template() -> str:
+    # FIXME: why have I done this
+    # https://nbviewer.org/gist/talbertc-usgs/18f8901fc98f109f2b71156cf3ac81cd
+    return """
+{% macro html(this, kwargs) %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Draggable - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+  <script>
+  $( function() {
+    $( "#maplegend" ).draggable({
+                    start: function (event, ui) {
+                        $(this).css({
+                            right: "auto",
+                            top: "auto",
+                            bottom: "auto"
+                        });
+                    }
+                });
+});
+
+  </script>
+</head>
+<body>
+
+ 
+<div id='maplegend' class='maplegend' 
+    style='position: absolute; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
+     border-radius:6px; padding: 10px; font-size:14px; right: 20px; top: 20px;'>
+     
+<div class='legend-title' style="font-size:2.0em;">
+    <strong>Faculty Icons</strong>
+</div>
+<div class='legend-scale'>
+  <ul class='legend-labels' style="font-size:1.8em; text-align: left">
+    <li>
+        <b><i class="fa-solid fa-desktop"></i></b>
+            : EAIT</li>
+    <li>
+        <b><i class="fa-solid fa-arrow-trend-up"></i></b>
+            : BEL</li>
+    <li>
+        <b><i class="fa-solid fa-people-group"></i></b>
+            : HABS</li>
+    <li>
+        <b><i class="fa-solid fa-earth-asia"></i></b>
+            : HASS</li>
+    <li>
+        <b><i class="fa-solid fa-flask"></i></b>
+            : SCI</li>
+    <li>
+        <b><i class="fa-solid fa-staff-snake"></i></b>
+            : MED</li>
+
+  </ul>
+</div>
+</div>
+ 
+</body>
+</html>
+
+<style type='text/css'>
+  .maplegend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .maplegend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .maplegend .legend-scale ul li {
+    font-size: 80%;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  .maplegend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+  .maplegend .legend-source {
+    font-size: 80%;
+    color: #777;
+    clear: both;
+    }
+  .maplegend a {
+    color: #777;
+    }
+  .alignMe b {
+    display: inline-block;
+    width: 50%;
+    position: relative;
+    padding-right: 10px
+  }
+  .alignMe b::after {
+    content: ":";
+    position: absolute;
+    right: 10px;
+  }
+</style>
+{% endmacro %}"""
