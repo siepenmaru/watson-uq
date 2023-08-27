@@ -38,7 +38,10 @@ def index(request):
 
     # create map centered on UQ
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
-    cluster = MarkerCluster().add_to(m)
+    cluster = MarkerCluster(options={
+        "animate": True,
+        "spiderfyDistanceMultiplier": 2
+    }).add_to(m)
     template = get_template()
     macro = MacroElement()
     macro._template = Template(template)
@@ -72,13 +75,11 @@ def index(request):
             label = folium.Html(
                 f"""
                 <h2>{course} | {info['building_id']}-{info['room_id']}</h2>
-                <p style="font-size:150%">{info['desc']}</p>
-                <ul style="font-size:120%">
-                    <li>Faculty: {info['faculty']}</li>
-                    <li>Building: {info['building_id']} - {info['building_name']}</li>
-                    <li>Room: {info['room_id']}</li>
-                    <li>Start time: {info['start_time']}</li>
-                    <li>Duration: {info['duration']} minutes</li>
+                <p style="font-size:200%; margin-top:0.25em; margin-bottom:0.25em;">{info['desc']}</p>
+                <ul style="font-size:150%">
+                    <li><b>Building name:</b> {info['building_name']}</li>
+                    <li><b>Start time:</b> {info['start_time']}</li>
+                    <li><b>Duration:</b> {info['duration']} minutes</li>
                 </ul>
                 <div class='text-center'>
                 <button style="height:36px; width:184px;">
