@@ -45,11 +45,11 @@ def get_campus_buildings():
 
     return buildings
 
-def save_building_data():
+def save_building_data(path='data/buildings.pickle'):
     # hacky as heck, should probably use the DB for this.
     data = get_campus_buildings()
 
-    with open('data/buildings.pickle', 'wb') as handle:
+    with open(path, 'wb') as handle:
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 def get_center_coords(way: overpy.Way) -> tuple[Decimal, Decimal]:
