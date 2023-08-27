@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from dotenv import load_dotenv, find_dotenv
 import os
 import folium
+from folium.plugins import MarkerCluster
 from api_utils import courses
 from .forms import TimeForm
 from datetime import datetime
@@ -37,6 +38,7 @@ def index(request):
 
     # create map centered on UQ
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
+    cluster = MarkerCluster().add_to(m)
     template = get_template()
     macro = MacroElement()
     macro._template = Template(template)
@@ -50,7 +52,6 @@ def index(request):
     buildings = load_buildings()
 
     info: dict
-    visited: dict = {}
     for course, info in current_courses.items():
         # FIXME: What if there are multiple lectures going on in the same building????
         try:
@@ -94,7 +95,7 @@ def index(request):
 
             folium.Marker(
                 coords, icon=folium.Icon(color='purple', icon=icon, prefix='fa')).add_child(
-                    folium.Popup(label, parse_html=True, max_width=300)).add_to(m)
+                    folium.Popup(label, parse_html=True, max_width=300)).add_to(cluster)
         except:
             # idc
             continue
