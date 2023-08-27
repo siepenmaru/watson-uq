@@ -41,7 +41,7 @@ def index(request):
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
     
     # get user location
-    user_loc = get_user_loc()
+    user_loc = get_user_loc(cheat_mode=True)
 
     # add building coords
     buildings = load_buildings()
@@ -75,8 +75,11 @@ def index(request):
                     <li>Duration: {info['duration']} minutes</li>
                 </ul>
                 <div class='text-center'>
-                <button>
-                    <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route={user_loc[0]}%2C{user_loc[1]}%3B{coords[0]}%2C{coords[1]}" target="_blank" rel="noopener noreferrer">
+                <button style="height:36px; width:128px;">
+                    <a 
+                        href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route={user_loc[0]}%2C{user_loc[1]}%3B{coords[0]}%2C{coords[1]}" target="_blank" rel="noopener noreferrer"
+                            style="font-size:1.875em;"
+                        >
                     Go!
                     </a>
                 </button>

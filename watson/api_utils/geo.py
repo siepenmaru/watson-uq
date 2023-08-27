@@ -3,6 +3,7 @@ import numpy as np
 from decimal import Decimal
 import pickle
 import geocoder
+from geopy.geocoders import Nominatim
 
 def get_campus_buildings():
     # TODO: generate building coords and other info, store them onto database
@@ -66,9 +67,22 @@ def get_relation_center(relation: overpy.Relation) -> tuple[Decimal, Decimal]:
         centers.append(get_center_coords(rway.resolve(resolve_missing=True)))
     return np.mean(centers, axis=0)
 
-def get_user_loc() -> tuple[Decimal, Decimal]:
-    g = geocoder.ip("")
-    return (g.latlng[0], g.latlng[1])
+def get_user_loc(cheat_mode=False) -> tuple[Decimal, Decimal]:
+    # try:
+    #     g = Nominatim(user_agent="Watson-UQ")
+
+    #     loc = g.geocode("1")
+    #     if loc:
+    #         return (loc.latitude, loc.longitude)
+    #     else:
+    #         raise
+    # except:
+    if cheat_mode:
+        # coords of advanced engineering building LMAO
+        return (-27.49922, 153.01552)
+    else:
+        g = geocoder.ip("")
+        return (g.latlng[0], g.latlng[1])
 
 if __name__=='__main__':
     save_building_data()
