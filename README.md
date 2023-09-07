@@ -13,6 +13,10 @@ Got some free time on your hands? Feeling curious? See what lectures are on and 
 # set up virtual environment
 python -m venv env
 
+# activate virtual environment
+# NOTE: actual command for activation may vary based on your shell or operating system
+source env/bin/activate
+
 # install requirements
 pip install -r requirements.txt
 
