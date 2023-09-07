@@ -11,6 +11,7 @@ Got some free time on your hands? Feeling curious? See what lectures are on and 
 # in repo root:
 
 # set up virtual environment
+# for some operating systems / distributions, you may have to use "python3" instead
 python -m venv env
 
 # activate virtual environment
