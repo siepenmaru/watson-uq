@@ -8,7 +8,7 @@ def get_course(
         ) -> requests.Response:
     day_str = ""
     for day in days:
-        day_str += f"&day={day}"
+        day_str += f"&days={day}"
 
     body = f"search-term={search_term}&semester={semester}&campus=STLUC&faculty={faculty}&type={activity_type}{day_str}&start-time={start_time}&end-time={end_time}"
 
