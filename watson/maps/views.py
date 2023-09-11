@@ -84,6 +84,14 @@ def index(request):
                 <div class='text-center'>
                 <button style="height:36px; width:184px;">
                     <a 
+                        href="https://my.uq.edu.au/programs-courses/course.html?course_code={course}" target="_blank" rel="noopener noreferrer"
+                            style="font-size:1.875em;"
+                        >
+                    Course Page
+                    </a>
+                </button>
+                <button style="height:36px; width:184px;">
+                    <a 
                         href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route={user_loc[0]}%2C{user_loc[1]}%3B{coords[0]}%2C{coords[1]}" target="_blank" rel="noopener noreferrer"
                             style="font-size:1.875em;"
                         >
