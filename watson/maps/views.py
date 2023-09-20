@@ -3,6 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 import os
 import folium
 from folium.plugins import MarkerCluster
+import branca
 from api_utils import courses
 from .forms import TimeForm
 from datetime import datetime
@@ -38,6 +39,7 @@ def index(request):
 
 
     # create map centered on UQ
+    fig = branca.element.Figure(height="100%")
     m = folium.Map(location=[-27.49894, 153.01368], zoom_start=19, max_zoom=19)
     cluster = MarkerCluster(options={
         "animate": True,
@@ -47,7 +49,9 @@ def index(request):
     macro = MacroElement()
     macro._template = Template(template)
 
-    m.get_root().add_child(macro)
+    # m.get_root().add_child(macro)
+    fig.add_child(m)
+    fig.add_child(macro)
     
     # get user location
     user_loc = get_user_loc(cheat_mode=True)
@@ -117,7 +121,8 @@ def index(request):
     
     # create context for page
     context = {
-        'map': m._repr_html_(),
+        # 'map': m._repr_html_(),
+        'map': fig._repr_html_(),
         'time_form': form
         }
 

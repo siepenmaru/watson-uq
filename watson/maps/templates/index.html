@@ -8,7 +8,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Watson UQ</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="{% static 'mystyles.css' %}">
   </head>
   <body>
@@ -20,11 +19,11 @@
     <a class="navbar-item is-size-4 has-text-weight-bold">
         Watson UQ
     </a>
-    <a class="navbar-item is-size-5 has-text-weight-semibold">
+    <a class="navbar-item is-size-5 has-text-weight-semibold is-hidden-mobile">
         Always know what's on!
     </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarTimeSettings">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -32,66 +31,66 @@
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      {% comment %} <a class="navbar-item">
-        Home
-      </a>
+    <!-- <div class="navbar-start"> -->
+    <!--   {% comment %} <a class="navbar-item"> -->
+    <!--     Home -->
+    <!--   </a> -->
 
-      <a class="navbar-item">
-        Documentation
-      </a>
+    <!--   <a class="navbar-item"> -->
+    <!--     Documentation -->
+    <!--   </a> -->
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
-        </a>
+    <!--   <div class="navbar-item has-dropdown is-hoverable"> -->
+    <!--     <a class="navbar-link"> -->
+    <!--       More -->
+    <!--     </a> -->
 
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
-          <a class="navbar-item">
-            Contact
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a> {% endcomment %}
+    <!--     <div class="navbar-dropdown"> -->
+    <!--       <a class="navbar-item"> -->
+    <!--         About -->
+    <!--       </a> -->
+    <!--       <a class="navbar-item"> -->
+    <!--         Contact -->
+    <!--       </a> -->
+    <!--       <hr class="navbar-divider"> -->
+    <!--       <a class="navbar-item"> -->
+    <!--         Report an issue -->
+    <!--       </a> {% endcomment %} -->
+    <!--     </div> -->
+
+    <div id="navbarTimeSettings" class="navbar-end">
+      <form method="POST">
+        <div class="field is-grouped">
+            {% csrf_token %}
+            <div class="navbar-item">
+                {{ time_form.date_index|as_crispy_field }}
+            </div>
+            <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
+                {{ time_form.selected_time|as_crispy_field }}
+            </div>
+            <div class="navbar-item">
+                <button type="submit" class="button is-success">Submit</button>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <div class="navbar-end">
-    <form method="POST">
-      <div class="field is-grouped">
-          {% csrf_token %}
-          <div class="navbar-item">
-              {{ time_form.date_index|as_crispy_field }}
-          </div>
-          <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
-              {{ time_form.selected_time|as_crispy_field }}
-          </div>
-          <div class="navbar-item">
-              <button type="submit" class="button is-success">Submit</button>
-          </div>
-      </div>
-    </form>
-    <form method="GET">
-      <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
-          <button class="button is-info" type="submit">
-            Reset to current time
+      </form>
+      <form method="GET">
+        <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
+            <button class="button is-info" type="submit">
+              Reset to current time
         </div>
-      </div>
-    </form>
+      </form>
     </div>
   </div>
 </nav>
   <section class="hero is-danger is-fullheight-with-navbar">
     <div class="hero-body has-text-centered">
-      <div class="box is-flex-grow-1 is-flex-direction-column is-align-items-stretch">
+      <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
         {{ map|safe }}
       </div>
     </div>
   </section>
   </body>
 </html>
+
+<script src="{% static "js/jquery-3.7.1.min.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
