@@ -26,7 +26,7 @@ def get_current_courses(url, day, time, current, debug=False) -> dict:
         start_time = "10:00"
         end_time = "11:00"
     elif current:
-        dt = datetime.now()
+        dt = time
         days = [dt.date().strftime('%w')]
         start_time = floor_hour(dt).strftime("%H:%M")
         end_time = ceil_hour(dt).strftime("%H:%M")

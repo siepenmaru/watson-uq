@@ -7,6 +7,7 @@ import branca
 from api_utils import courses
 from .forms import TimeForm
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from api_utils.misc import floor_hour
 from api_utils.geo import get_user_loc
 import pickle
@@ -26,7 +27,7 @@ def index(request):
             # FIXME: debug mode
             current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
     else:
-        dt = datetime.now()
+        dt = datetime.now(ZoneInfo("Australia/Brisbane"))
         form = TimeForm(
             initial={
                 'date_index': dt.date().strftime('%w'),
@@ -34,8 +35,7 @@ def index(request):
             }
         )
         
-        print(form.initial.get('selected_time'))
-        current_courses = courses.get_current_courses(api_url, 1, f"{floor_hour(dt).strftime('%H')}:01", True, debug=False)
+        current_courses = courses.get_current_courses(api_url, 1, dt, True, debug=False)
 
 
     # create map centered on UQ
