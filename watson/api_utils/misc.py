@@ -13,4 +13,4 @@ def ceil_hour(t: datetime) -> datetime:
     return (datetime(
         2000, 1, 1,
         hour = t.hour, minute=0, second=0, microsecond=0
-        ) + timedelta(minutes=59)).time()
+        ) + timedelta(minutes=59))

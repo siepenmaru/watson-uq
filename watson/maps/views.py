@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from dotenv import load_dotenv, find_dotenv
 import os
 import folium
@@ -30,10 +29,12 @@ def index(request):
         form = TimeForm(
             initial={
                 'date_index': dt.date().strftime('%w'),
-                'selected_time': floor_hour(dt.time())
+                'selected_time': floor_hour(dt).replace(minute=0).time()
             }
         )
-        current_courses = courses.get_current_courses(api_url, 1, "10:00", True, debug=False)
+        
+        print(form.initial.get('selected_time'))
+        current_courses = courses.get_current_courses(api_url, 1, f"{floor_hour(dt).strftime('%H')}:01", True, debug=False)
 
 
     # create map centered on UQ
@@ -172,11 +173,11 @@ def get_template() -> str:
     style='position: absolute; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
      border-radius:6px; padding: 10px; font-size:14px; right: 20px; top: 20px;'>
      
-<div class='legend-title' style="font-size:2.0em;">
-    <strong>Faculty Icons</strong>
+<div class='legend-title' style="font-size:1.8em;">
+    <strong>Faculties</strong>
 </div>
 <div class='legend-scale'>
-  <ul class='legend-labels' style="font-size:1.8em; text-align: left">
+  <ul class='legend-labels' style="font-size:1.4em; text-align: left">
     <li>
         <b><i class="fa-solid fa-desktop"></i></b>
             : EAIT</li>
