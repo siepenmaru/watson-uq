@@ -4,6 +4,8 @@ from decimal import Decimal
 import pickle
 import geocoder
 from geopy.geocoders import Nominatim
+import json
+from decimal import Decimal
 
 def get_campus_buildings():
     # TODO: generate building coords and other info, store them onto database
@@ -45,12 +47,22 @@ def get_campus_buildings():
 
     return buildings
 
+#Does quasi the same things as json.loads from here: https://pypi.org/project/dynamodb-json/
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return json.JSONEncoder.default(self, obj)
+
 def save_building_data(path='data/buildings.pickle'):
     # hacky as heck, should probably use the DB for this.
     data = get_campus_buildings()
 
     with open(path, 'wb') as handle:
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    
+    # with open('buildings.json', 'w') as handle:
+    #     json.dump(data, handle, cls=JSONEncoder)
 
 def get_center_coords(way: overpy.Way) -> tuple[Decimal, Decimal]:
     # get coordinate of center
