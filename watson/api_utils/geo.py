@@ -29,6 +29,9 @@ def get_campus_buildings():
     for way in out.ways:
         # only include buildings with proper IDs
         if "ref" in way.tags:
+            # pad with leading zeroes to match UQ API output format
+            way.tags["ref"] = f'{way.tags["ref"]:0>2}'
+
             # get coordinate of center
             coords = get_center_coords(way)
 
@@ -40,6 +43,9 @@ def get_campus_buildings():
     relation: overpy.Relation
     for relation in out.relations:
         if "ref" in relation.tags:
+            # pad with leading zeroes to match UQ API output format
+            relation.tags["ref"] = f'{relation.tags["ref"]:0>2}'
+
             coords = get_relation_center(relation)
 
             buildings[relation.tags["ref"]] = {"lat": coords[0], "lon": coords[1]}
