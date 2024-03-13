@@ -79,10 +79,17 @@ def index(request):
 
             label = folium.Html(
                 f"""
-                <h2>{course} | {info['building_id']}-{info['room_id']}</h2>
-                <p style="font-size:200%; margin-top:0.25em; margin-bottom:0.25em;">{info['desc']}</p>
+                <h2 style="font-size:200%;">
+                    <b>{course}</b> | {info['building_id']}-{info['room_id']}
+                </h2>
+                <p style="font-size:175%; margin-top:0.25em; margin-bottom:0.25em;">
+                    <i>
+                    {info['desc']}
+                    </i>
+                </p>
                 <ul style="font-size:150%">
-                    <li><b>Building name:</b> {info['building_name']}</li>
+                    <li><b>Building:</b> {info['building_name']}</li>
+                    <li><b>Room:</b> {info['room_id']}</li>
                     <li><b>Start time:</b> {info['start_time']}</li>
                     <li><b>Duration:</b> {info['duration']} minutes</li>
                 </ul>
@@ -109,7 +116,7 @@ def index(request):
 
             folium.Marker(
                 coords, icon=folium.Icon(color='purple', icon=icon, prefix='fa')).add_child(
-                    folium.Popup(label, parse_html=True, max_width=300)).add_to(cluster)
+                    folium.Popup(label, parse_html=True, max_width=225)).add_to(cluster)
         except:
             # idc
             continue
