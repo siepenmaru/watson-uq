@@ -178,11 +178,11 @@ def get_template() -> str:
     style='position: absolute; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
      border-radius:6px; padding: 10px; font-size:14px; right: 20px; top: 20px;'>
      
-<div class='legend-title' style="font-size:1.8em;">
+<div class='legend-title' style="font-size:1em;">
     <strong>Faculties</strong>
 </div>
 <div class='legend-scale'>
-  <ul class='legend-labels' style="font-size:1.4em; text-align: left">
+  <ul class='legend-labels' style="font-size:1em; text-align: left">
     <li>
         <b><i class="fa-solid fa-desktop"></i></b>
             : EAIT</li>
