@@ -13,103 +13,76 @@
   </head>
   <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item">
-      <img src="{% static 'map.svg' %}" width="48" height="28">
-    </a>
-    <a class="navbar-item is-size-5 has-text-weight-bold">
-        Watson UQ
-    </a>
-    <a class="navbar-item is-size-6 has-text-weight-semibold is-hidden-mobile">
-        Always know what's on!
-    </a>
+      <div class="navbar-brand">
+        <a class="navbar-item">
+          <img src="{% static 'map.svg' %}" width="48" height="28">
+        </a>
+        <a class="navbar-item is-size-5 has-text-weight-bold">
+            Watson UQ
+        </a>
+        <a class="navbar-item is-size-6 has-text-weight-semibold is-hidden-mobile">
+            Always know what's on!
+        </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarTimeSettings">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarTimeSettings">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
-    <!-- <div class="navbar-start"> -->
-    <!--   {% comment %} <a class="navbar-item"> -->
-    <!--     Home -->
-    <!--   </a> -->
-
-    <!--   <a class="navbar-item"> -->
-    <!--     Documentation -->
-    <!--   </a> -->
-
-    <!--   <div class="navbar-item has-dropdown is-hoverable"> -->
-    <!--     <a class="navbar-link"> -->
-    <!--       More -->
-    <!--     </a> -->
-
-    <!--     <div class="navbar-dropdown"> -->
-    <!--       <a class="navbar-item"> -->
-    <!--         About -->
-    <!--       </a> -->
-    <!--       <a class="navbar-item"> -->
-    <!--         Contact -->
-    <!--       </a> -->
-    <!--       <hr class="navbar-divider"> -->
-    <!--       <a class="navbar-item"> -->
-    <!--         Report an issue -->
-    <!--       </a> {% endcomment %} -->
-    <!--     </div> -->
-
-    <div id="navbarTimeSettings" class="navbar-end">
-      <form method="POST">
-        <div class="field is-grouped">
-            {% csrf_token %}
-            <div class="navbar-item">
-                {{ time_form.date_index|as_crispy_field }}
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div id="navbarTimeSettings" class="navbar-end">
+          <form method="POST">
+            <div class="field is-grouped">
+                {% csrf_token %}
+                <div class="navbar-item">
+                    {{ time_form.date_index|as_crispy_field }}
+                </div>
+                <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
+                    {{ time_form.selected_time|as_crispy_field }}
+                </div>
+                <div class="navbar-item">
+                    <button type="submit" class="button is-success">Submit</button>
+                </div>
             </div>
+          </form>
+          <form method="GET">
             <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
-                {{ time_form.selected_time|as_crispy_field }}
+                <button class="button is-info" type="submit">
+                  Reset to current time
             </div>
-            <div class="navbar-item">
-                <button type="submit" class="button is-success">Submit</button>
-            </div>
+          </form>
+          <div class="navbar-item">
+            <button class="button js-modal-trigger" data-target="info-modal">
+              About
+            </button>
+          </div>
         </div>
-      </form>
-      <form method="GET">
-        <div class="navbar-item is-flex-direction-row is-flex-wrap-nowrap">
-            <button class="button is-info" type="submit">
-              Reset to current time
+      </div>
+    </nav>
+    <section class="hero is-danger is-fullheight-with-navbar">
+      <div class="hero-body has-text-centered">
+        <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
+          {{ map|safe }}
         </div>
-      </form>
-      <div class="navbar-item">
-        <button class="button js-modal-trigger" data-target="info-modal">
-          About
-        </button>
       </div>
-    </div>
-  </div>
-</nav>
-  <section class="hero is-danger is-fullheight-with-navbar">
-    <div class="hero-body has-text-centered">
-      <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
-        {{ map|safe }}
+    </section>
+
+    <div id="info-modal" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-content">
+        <div class="box has-text-centered">
+          <strong>Watson UQ</strong>
+          <p>Made with ❤️ by Avatar Azka</p>
+          <p><a href="https://github.com/siepenmaru/watson-uq">Source</a> | <a href="https://github.com/siepenmaru/watson-uq/issues">Issues</a> | <a href="https://forms.gle/TesQpGXGWibc4A6JA">Give Feedback</a></p>
+          <p>This app is not affiliated with UQ!</p>
+        </div>
       </div>
+
+      <button class="modal-close is-large" aria-label="close"></button>
     </div>
-  </section>
-
-  <div id="info-modal" class="modal">
-    <div class="modal-background"></div>
-
-    <div class="modal-content">
-      <div class="box has-text-centered">
-        <strong>Watson UQ</strong>
-        <p>Made with ❤️ by Avatar Azka</p>
-        <p><a href="https://github.com/siepenmaru/watson-uq">Source</a> | <a href="https://github.com/siepenmaru/watson-uq/issues">Issues</a> | <a href="https://forms.gle/TesQpGXGWibc4A6JA">Give Feedback</a></p>
-        <p>This app is not affiliated with UQ!</p>
-      </div>
-    </div>
-
-    <button class="modal-close is-large" aria-label="close"></button>
-  </div>
   </body>
 </html>
 
