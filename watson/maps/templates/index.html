@@ -61,13 +61,6 @@
         </div>
       </div>
     </nav>
-    <section class="hero is-danger is-fullheight-with-navbar">
-      <div class="hero-body has-text-centered">
-        <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
-          {{ map|safe }}
-        </div>
-      </div>
-    </section>
 
     <div id="info-modal" class="modal">
       <div class="modal-background"></div>
@@ -83,6 +76,9 @@
 
       <button class="modal-close is-large" aria-label="close"></button>
     </div>
+
+  {% block content %}
+  {% endblock %}
   </body>
 </html>
 

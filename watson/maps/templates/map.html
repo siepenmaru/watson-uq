@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block content %}
+    <section class="hero is-danger is-fullheight-with-navbar">
+      <div class="hero-body has-text-centered">
+        <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
+          {{ map|safe }}
+        </div>
+      </div>
+    </section>
+{% endblock %}

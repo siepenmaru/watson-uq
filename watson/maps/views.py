@@ -133,7 +133,7 @@ def index(request):
         'time_form': form
         }
 
-    return render (request, "index.html", context)
+    return render (request, "map.html", context)
 
 def get_url() -> str:
     load_dotenv(find_dotenv())
