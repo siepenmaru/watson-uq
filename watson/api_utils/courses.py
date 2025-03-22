@@ -37,7 +37,7 @@ def get_current_courses(url, day, time, current, debug=False) -> dict:
 
     courses: dict = {}
     for faculty in faculties:
-        json_dict: dict = get_course(url, "", "S2", faculty, "Lecture", days, start_time, end_time).json()
+        json_dict: dict = get_course(url, "", "S1", faculty, "Lecture", days, start_time, end_time).json()
         for _, v in json_dict.items():
             try:
                 activity = next(iter(v['activities'].values()))
