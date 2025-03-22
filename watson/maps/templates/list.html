@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+    <section class="hero is-danger is-fullheight-with-navbar">
+      <div class="hero-body has-text-centered">
+        <div class="box is-flex-grow-1 is-align-items-stretch", style="height: 100vh;">
+            <table class="table" summary="courses">
+                <tr><th>Course</th> <th>Building Number</th> <th>Start Time</th> <th>Duration (minutes)</th></tr>
+                {% for course, info in courses.items %}
+                    <tr><td>{{ course }}</td> <td>{{ info.building_name.0 }}</td> <td>{{ info.start_time }}</td> <td>{{ info.duration }}</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+      </div>
+    </section>
+{% endblock %}

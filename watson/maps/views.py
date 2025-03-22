@@ -14,7 +14,6 @@ import pickle
 from branca.element import Template, MacroElement
 
 def index(request):
-    # TODO: handle multiple lecs in one building
     api_url = get_url()
     if request.method == "POST":
         print(request.POST)
@@ -24,7 +23,7 @@ def index(request):
             time: datetime = form.cleaned_data['selected_time']
             current_courses = courses.get_current_courses(api_url, idx, time, False, debug=False)
         else:
-            # FIXME: debug mode
+            # debug mode
             current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
     else:
         dt = datetime.now(ZoneInfo("Australia/Brisbane"))
@@ -54,6 +53,7 @@ def index(request):
     fig.add_child(macro)
     
     # get user location
+    # FIXME: this doesn't work yet!!
     user_loc = get_user_loc(cheat_mode=True)
 
     # add building coords
@@ -61,7 +61,6 @@ def index(request):
 
     info: dict
     for course, info in current_courses.items():
-        # FIXME: What if there are multiple lectures going on in the same building????
         try:
             building = buildings[info["building_id"]]
             # if building not in visited:
@@ -133,7 +132,36 @@ def index(request):
         'time_form': form
         }
 
-    return render (request, "index.html", context)
+    return render (request, "map.html", context)
+
+def course_list(request):
+    api_url = get_url()
+    if request.method == "POST":
+        print(request.POST)
+        form = TimeForm(request.POST)
+        if form.is_valid():
+            idx = form.cleaned_data['date_index']
+            time: datetime = form.cleaned_data['selected_time']
+            current_courses = courses.get_current_courses(api_url, idx, time, False, debug=False)
+        else:
+            # debug mode
+            current_courses = courses.get_current_courses(api_url, 1, "10:00", False, debug=True)
+    else:
+        dt = datetime.now(ZoneInfo("Australia/Brisbane"))
+        form = TimeForm(
+            initial={
+                'date_index': dt.date().strftime('%w'),
+                'selected_time': floor_hour(dt).replace(minute=0).time()
+            }
+        )
+        
+        current_courses = courses.get_current_courses(api_url, 1, dt, True, debug=False)
+
+    context = {
+        'time_form': form,
+        'courses': current_courses
+        }
+    return render (request, "list.html", context)
 
 def get_url() -> str:
     load_dotenv(find_dotenv())
@@ -147,7 +175,7 @@ def load_buildings() -> dict:
     return data
 
 def get_template() -> str:
-    # FIXME: why have I done this
+    # NOTE: why have I done this
     # https://nbviewer.org/gist/talbertc-usgs/18f8901fc98f109f2b71156cf3ac81cd
     return """
 {% macro html(this, kwargs) %}
